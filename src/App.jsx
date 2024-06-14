@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+import './index.css'
 import personsService from './services/persons'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import NewPersonNotification from './components/NewPersonNotification';
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [newPersonName, setNewPersonName] = useState('')
 
   useEffect(() => {
     axios
@@ -41,6 +44,11 @@ const App = () => {
       .post(newPerson)
       .then(person => {
         setPersons(persons.concat(person))
+        setNewPersonName(person.name)
+
+        setTimeout(() => {
+          setNewPersonName('')
+        }, 5000)
       })
   }
 
@@ -67,6 +75,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <NewPersonNotification name={newPersonName} />
       <h2>Add a new</h2>
       <PersonForm
         onAddPerson={addPerson}
