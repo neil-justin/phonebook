@@ -40,7 +40,6 @@ const App = () => {
     personsService
       .post(newPerson)
       .then(person => {
-        console.log(person)
         setPersons(persons.concat(person))
       })
   }
@@ -51,6 +50,18 @@ const App = () => {
 
   const handleNumberChange = (e) => {
     setNewNumber(e.target.value)
+  }
+
+  const handlePersonDelete = (person) => {
+    const shouldDelete = window.confirm(`Delete ${person.name}?`);
+
+    if (shouldDelete) {
+      personsService
+        .remove(person.id)
+        .then(deletedPerson => {
+          setPersons(persons.filter(person => person.name !== deletedPerson.name))
+        })
+    }
   }
 
   return (
@@ -65,7 +76,10 @@ const App = () => {
         onNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons
+        persons={persons}
+        onPersonDelete={handlePersonDelete}
+      />
     </div>
   )
 }

@@ -8,4 +8,11 @@ const post = newPerson => {
         .then(response => response.data);
 }
 
-export default { post }
+const remove = personId => {
+
+    return axios
+        .delete(`http://localhost:3001/persons/${personId}`)
+        .then(response => response.data);
+}
+
+export default { post, remove }
