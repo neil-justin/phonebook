@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
+import axios from 'axios'
+
+import personsService from './services/persons'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
-  const [newNum, setNewNum] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log(response.data)
         setPersons(response.data)
       })
   }, [])
@@ -20,7 +21,7 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault()
     setNewName('')
-    setNewNum('')
+    setNewNumber('')
 
     const isDuplicate = persons.some(person =>
       person.name.toLowerCase() === newName)
@@ -32,18 +33,24 @@ const App = () => {
 
     const newPerson = {
       name: newName,
-      num: newNum
+      number: newNumber
     }
 
-    setPersons(persons.concat(newPerson))
+
+    personsService
+      .post(newPerson)
+      .then(person => {
+        console.log(person)
+        setPersons(persons.concat(person))
+      })
   }
 
   const handleNameChange = (e) => {
     setNewName(e.target.value)
   }
 
-  const handleNumChange = (e) => {
-    setNewNum(e.target.value)
+  const handleNumberChange = (e) => {
+    setNewNumber(e.target.value)
   }
 
   return (
@@ -54,8 +61,8 @@ const App = () => {
         onAddPerson={addPerson}
         name={newName}
         onNameChange={handleNameChange}
-        num={newNum}
-        onNumChange={handleNumChange}
+        number={newNumber}
+        onNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
       <Persons persons={persons} />
