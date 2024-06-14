@@ -1,13 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import axios from 'axios'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', num: '040-1234567' }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log(response.data)
+        setPersons(response.data)
+      })
+  }, [])
 
   const addPerson = (e) => {
     e.preventDefault()
@@ -38,7 +46,6 @@ const App = () => {
     setNewNum(e.target.value)
   }
 
-  // refactor: extract form, extract list
   return (
     <div>
       <h1>Phonebook</h1>
