@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const post = newPerson => {
     return axios
@@ -15,4 +15,4 @@ const remove = personId => {
         .then(response => response.data);
 }
 
-export default { post, remove }
+export default { baseUrl, post, remove }
