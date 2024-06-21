@@ -27,7 +27,7 @@ const App = () => {
     setNewNumber('')
 
     const isDuplicate = persons.some(person =>
-      person.name.toLowerCase() === newName)
+      person.name.toLowerCase() === newName.toLowerCase())
 
     if (isDuplicate) {
       window.alert(`${newName} is already added to phonebook`)
